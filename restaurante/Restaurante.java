@@ -1,170 +1,10 @@
 package restaurante;
 
-import java.util.Optional;
+import restaurante.objetos.*;
+
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-abstract class Pessoa {
-    protected String nome;
-
-    public Pessoa(String nome) {
-        this.nome = nome;
-    }
-}
-
-class Cliente extends Pessoa {
-    public Cliente(String nome) {
-        super(nome);
-    }
-
-    @Override
-    public String toString() {
-        String aux = super.toString();
-        return aux;
-    }
-}
-
-class Funcionario extends Pessoa {
-    protected String cargo;
-    protected int matricula;
-
-    public Funcionario(String nome, String cargo, int matricula) {
-        super(nome);
-        this.cargo = cargo;
-        this.matricula = matricula;
-    }
-
-    @Override
-    public String toString() {
-        String aux = super.toString() + "-Cargo: " + cargo + "Matricula: " + matricula;
-
-        return aux;
-    }
-}
-
-interface Compravel {
-    double getPreco();
-    void setPreco();
-}
-
-abstract class Alimento implements Compravel {
-    protected String nome;
-    protected String descricao;
-    protected double preco;
-
-    public Alimento(String nome, String descricao, double preco) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-    }
-
-    String getNome() {
-        return this.nome;
-    }
-
-    void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    String getDescricao() {
-        return this.descricao;
-    }
-
-    void setDescricao() {
-        this.descricao = descricao;
-    }
-
-    public double getPreco() {
-        return this.preco;
-    }
-
-    public void setPreco() {
-        this.preco = preco;
-    }
-}
-
-final class Refrigerante extends Alimento {
-    protected String marca;
-
-    public Refrigerante(String nome, String descricao, double preco, String marca) {
-        super(nome, descricao, preco);
-
-        this.marca = marca;
-    }
-
-    @Override
-    public String toString() {
-        String aux = super.toString() + "-Marca: " + marca;
-
-        return aux;
-    }
-}
-
-class Cardapio {
-    Vector<Alimento> items;
-
-    public Cardapio() {
-        this.items = new Vector<Alimento>();
-    }
-}
-
-class Conta {
-    Mesa mesa;
-    Vector<Alimento> pedidos;
-
-    void fecharConta() {
-
-    }
-
-    void pedir(Alimento alimento) {
-
-    }
-}
-
-class Reserva {
-    protected String data;
-    protected Cliente cliente;
-
-    public Reserva(String data, Cliente cliente) {
-        this.data = data;
-        this.cliente = cliente;
-    }
-}
-
-class Mesa {
-    Integer numero_da_mesa;
-    Vector<Optional<Cliente>> assentos;
-
-    public Mesa(Integer numero_da_mesa) {
-        this.numero_da_mesa = numero_da_mesa;
-        this.assentos = new Vector<Optional<Cliente>>();
-    }
-
-    Boolean estaDisponivel() {
-        return this.assentos.size() == 0;
-    }
-
-    Vector<Integer> obterAssentosVagos() {
-        Vector<Integer> assentos_vagos = new Vector<Integer>();
-
-        for (int i = 0; i < this.assentos.size(); i++) {
-            Optional<Cliente> assento = this.assentos.get(i);
-
-            if (assento.isPresent())
-                assentos_vagos.add(i);
-        }
-
-        return assentos_vagos;
-    }
-
-    void reservar(Vector<Cliente> clientes) {
-        for (int i = 0; i < clientes.size(); i++) {
-            this.assentos.set(i, Optional.of(clientes.get(i)));
-        }
-    }
-}
-
 public class Restaurante {
     static Logger logger = Logger.getLogger("restaurante");
     
@@ -202,5 +42,45 @@ public class Restaurante {
         }
         
         return false;
+    }
+
+    public void ListaFuncionarios(Vector<Funcionario> funcionarios){
+        System.out.println("FUNCINARIOS NO SISTEMA: ");
+        for(Funcionario f : funcionarios){
+            System.out.println(f.toString());
+        }
+
+    }
+
+    public void InserirFuncionarios(Vector<Funcionario> funcionarios){
+
+        funcionarios.add(new Funcionario("Pedro", "Gerente", 11));
+        funcionarios.add(new Funcionario("Lucas", "Chefe", 12));
+        funcionarios.add(new Funcionario("Betriz", "Assintente de Cozinha", 13));
+        funcionarios.add(new Funcionario("Inaldo", "Barista", 14));
+        funcionarios.add(new Funcionario("Carol", "Garçonete", 15));
+        funcionarios.add(new Funcionario("Maria", "Faxineira", 16 ));
+        funcionarios.add(new Funcionario("Alex", "Garço", 17));
+    }
+
+
+    public void ListaAlimentos(Vector<Alimento> alimento){
+
+        System.out.println("CADAPIO DO DIA: ");
+        for(Alimento a : alimento){
+            System.out.println(a.toString());
+        }
+
+    }
+
+    public void InserirAlimentos(Vector<Alimento> alimentos){
+
+        alimentos.add(new Prato("Picanha", "Carne", 30));
+        alimentos.add(new Prato("Pizza", "Mussarela", 34));
+        alimentos.add(new Prato("Sushi", "Peixe Cru", 25));
+        alimentos.add(new Bebida("Vinho", "Feito de uva", 45, "Tinto"));
+        alimentos.add(new Bebida("Cerveja", "Deixa Bebado", 75, "Skoll"));
+        alimentos.add(new Bebida("Guarana", "E simples", 14, "Guarana"));
+
     }
 }

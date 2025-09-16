@@ -11,9 +11,10 @@ class Reserva {
         this.mesa = mesa;
     }
 
+
     @Override
     public String toString(){
-        String aux = "data: " + data + "Cliente Responsavel: " + cliente_Resposnavel;
+        String aux = "Data da Reserva: " + data + "Cliente Responsavel: " + cliente_Resposnavel;
         return aux;
     }
 }

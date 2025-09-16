@@ -10,6 +10,6 @@ public final class Bebida extends Alimento {
 
     @Override
     public String toString() {
-        return nome + "\n| Descricao: " + descricao + " - Preco: " + preco + " - Marca: " + marca + " |";
+        return nome + "\n| Descricao: " + descricao + " - Preco: " + preco + " R$ - Marca: " + marca + " |";
     }
 }

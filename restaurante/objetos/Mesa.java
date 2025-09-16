@@ -16,6 +16,7 @@ public class Mesa {
         return this.assentos.size() == 0;
     }
 
+    // Quais assentos estão vagos?
     public Vector<Integer> obterAssentosVagos() {
         Vector<Integer> assentos_vagos = new Vector<Integer>();
 

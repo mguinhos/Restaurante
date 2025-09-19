@@ -1,130 +1,94 @@
 package restaurante;
 
-import restaurante.objetos.*;
+import java.util.ArrayList;
 
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Logger;
-import restaurante.objetos.Cardapio;
-import restaurante.objetos.Pedido;
+import restaurante.erros.FuncionarioNaoEncontradoErro;
+import restaurante.pessoa.Funcionario;
 
 public class Restaurante {
-    static Logger logger = Logger.getLogger("restaurante");
-
     Cardapio cardapio;
-    Vector<Mesa> mesas;
+    Estoque estoque;
+    float dinheiroNoCofre;
 
-    Vector<Cliente> clientes;
-    Vector<Funcionario> funcionarios;
-    Vector<Alimento> alimentos;
-    Vector<Pedido> pedido;
+    ArrayList<Funcionario> funcionarios;
 
     public Restaurante() {
         this.cardapio = new Cardapio();
-        this.mesas = new Vector<Mesa>();
-
-        this.clientes = new Vector<Cliente>();
-        this.funcionarios = new Vector<Funcionario>();
-        this.alimentos = new Vector<Alimento>();
-        this.pedido = new Vector<Pedido>();
+        this.estoque = new Estoque();
+        this.funcionarios = new ArrayList<Funcionario>();
+        this.dinheiroNoCofre = 500.0f;
     }
 
-    public void Abrir(){
-        this.InserirAlimentos();
-        this.InserirFuncionarios();
+    public void cadastrarFuncionario(Funcionario funcionario) {
+        this.funcionarios.add(funcionario);
     }
 
-    // Quais mesas estão disponíveis?
-    public List<Mesa> obterMesasDisponiveis() {
-        Vector<Mesa> mesas_disponiveis = new Vector<Mesa>();
+    public void demitirFuncionario(Funcionario funcionario) {
+        this.funcionarios.remove(funcionario);
+    }
 
-        for (Mesa mesa : this.mesas) {
-            if (mesa.estaDisponivel()) {
-                mesas_disponiveis.add(mesa);
-            }
+    public void promoverFuncionario(Funcionario funcionario, Cargo novoCargo) {
+        if (this.funcionarios.contains(funcionario)) {
+            Cargo cargoAtual = funcionario.obterCargo();
+            funcionario.definirCargo(novoCargo);
+
+            funcionario.avaliar(0.8f);
+            System.out.println("  Funcionário " + funcionario.obterNome() +
+                    " foi promovido de " + cargoAtual + " para " + novoCargo);
         }
-
-        return mesas;
     }
 
-    public Boolean reservarMesa(Vector<Cliente> clientes) {
-        logger.info("Reservando mesa");
-        
-        for (Mesa mesa_disponivel : obterMesasDisponiveis()) {
-            Vector<Integer> assentos_vagos = mesa_disponivel.obterAssentosVagos();
+    public void rebaixarFuncionario(Funcionario funcionario, Cargo novoCargo) {
+        if (this.funcionarios.contains(funcionario)) {
+            Cargo cargoAtual = funcionario.obterCargo();
+            funcionario.definirCargo(novoCargo);
 
-            if (assentos_vagos.size() >= clientes.size()) {
-                mesa_disponivel.reservar(clientes);
-
-                return true;
-            }
+            funcionario.restaurarAvaliacaoParcial();
+            System.out.println("  Funcionário " + funcionario.obterNome() +
+                    " foi rebaixado de " + cargoAtual + " para " + novoCargo +
+                    " (segunda chance dada)");
         }
-        
+    }
+
+    public float obterDinheiroNoCofre() {
+        return this.dinheiroNoCofre;
+    }
+
+    public void adicionarDinheiroNoCofre(float valor) {
+        this.dinheiroNoCofre += valor;
+    }
+
+    public boolean removerDinheiroNoCofre(float valor) {
+        if (this.dinheiroNoCofre >= valor) {
+            this.dinheiroNoCofre -= valor;
+            return true;
+        }
         return false;
     }
 
-    public void ListaFuncionarios() {
-        System.out.println("FUNCINARIOS NO SISTEMA: ");
+    public void processarPagamento(float valorPago) {
+        this.adicionarDinheiroNoCofre(valorPago);
+    }
 
-        for (Funcionario f : this.funcionarios){
-            System.out.println(f.toString());
+    public ArrayList<Funcionario> obterFuncionarios() {
+        return this.funcionarios;
+    }
+
+    public Cardapio obteCardapio() {
+        return this.cardapio;
+    }
+
+    public Estoque obterEstoque() {
+        return this.estoque;
+    }
+
+    public Funcionario obterFuncionarioPorNome(String nome) throws FuncionarioNaoEncontradoErro {
+        for (Funcionario funcionario : this.funcionarios) {
+            if (funcionario.obterNome().equals(nome)) {
+                return funcionario;
+            }
         }
-    }
 
-    public void ListaAlimentos() {
-        for (Alimento a : this.alimentos) {
-            System.out.println(a.toString());
-        }
-    }
-
-    public Vector<Cliente> clientesNoSistemas() {
-        Vector<Cliente> clientes = new Vector<Cliente>(); 
-        
-        clientes.add(new Cliente("Mariana Oliveira"));
-        clientes.add(new Cliente("Carlos Mendes"));
-        clientes.add(new Cliente("Ana Beatriz "));
-
-        return clientes;
-    }
-
-    public void InserirFuncionarios() {
-        this.funcionarios.add(new Funcionario("Pedro", "Gerente", 11));
-        this.funcionarios.add(new Funcionario("Lucas", "Chefe", 12));
-        this.funcionarios.add(new Funcionario("Betriz", "Assintente de Cozinha", 13));
-        this.funcionarios.add(new Funcionario("Inaldo", "Barista", 14));
-        this.funcionarios.add(new Funcionario("Carol", "Garçonete", 15));
-        this.funcionarios.add(new Funcionario("Maria", "Faxineira", 16 ));
-        this.funcionarios.add(new Funcionario("Alex", "Garço", 17));
-    }
-
-    public void InserirAlimentos() {
-        this.alimentos.add(new Prato("Picanha", "Carne", 30));
-        this.alimentos.add(new Prato("Pizza", "Mussarela", 34));
-        this.alimentos.add(new Prato("Sushi", "Peixe Cru", 25));
-        this.alimentos.add(new Bebida("Vinho", "Feito de uva", 45, "Tinto"));
-        this.alimentos.add(new Bebida("Cerveja", "Deixa Bebado", 75, "Skoll"));
-        this.alimentos.add(new Bebida("Guarana", "E simples", 14, "Guarana"));
-    }
-
-    Vector<Alimento> alimentosSolicitados(int ali1, int ali2) {
-        Vector<Alimento> alimentos = new Vector<Alimento>(); 
-
-        alimentos.add(this.alimentos.get(ali1));
-        alimentos.add(this.alimentos.get(ali2));
-
-        return alimentos;
-
-    }
-
-    public void InserirPedido() {
-        this.pedido.add(new Pedido(this.clientes.get(0), alimentosSolicitados(0, 2)));
-        this.pedido.add(new Pedido(this.clientes.get(1), alimentosSolicitados(1, 4)));
-        this.pedido.add(new Pedido(this.clientes.get(2), alimentosSolicitados(5, 3)));
-    }
-
-    public void MostraPedidos() {
-       for (Pedido p : this.pedido){
-            p.mostraPedido();
-       }
+        throw new FuncionarioNaoEncontradoErro("Funcionário com nome '" + nome + "' não foi encontrado");
     }
 }

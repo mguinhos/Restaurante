@@ -90,7 +90,6 @@ make build
 make run
 ```
 
----
 
 ## Diagramas de Classes UML
 
@@ -109,7 +108,6 @@ Este é o diagrama principal que mostra o núcleo do sistema: as classes **`Rest
 - **`ItemCardapio`** implementa (`--|>`) a interface `Avaliavel`, o que permite que ele seja avaliado por clientes.
 - As classes `Cargo` e `ClasseSocial` são enums, que definem um conjunto fixo de valores e são usadas por outras classes para tipagem.
 
----
 
 ### 2. Classes de Pessoas e Funcionários
 
@@ -123,7 +121,6 @@ Este diagrama detalha a hierarquia das classes de pessoas no sistema.
 - As classes **`Cliente`** e **`Funcionario`** implementam (`..|>`) a interface `Pessoa`, garantindo que ambas tenham os métodos básicos definidos.
 - A classe `Funcionario` também implementa a interface `Avaliavel`, permitindo que seu desempenho seja avaliado. Há uma associação entre `Funcionario` e o enum `Cargo`.
 
----
 
 ### 3. Classes de Alimentos e Ingredientes
 
@@ -137,7 +134,6 @@ Aqui estão as classes que definem o que é vendido e o que é usado para produ�
 - Todas as subclasses de `Alimento` e `Ingrediente` herdam (`--|>`) seus respectivos comportamentos, como o cálculo de custo de produção e o nome do item.
 - Uma associação entre `Alimento` e `Ingrediente` indica que um alimento é composto por um ou mais ingredientes.
 
----
 
 ### 4. Classes de Ações
 

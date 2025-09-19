@@ -27,6 +27,14 @@ public class Sistema {
     private Map<String, Float> avaliacoesTotaisItens = new HashMap<>();
     private Map<String, Integer> numeroAvaliacoesItens = new HashMap<>();
 
+
+/**
+ * Construtor da classe Sistema. Inicializa o sistema de simulação e análise
+ * do restaurante, criando mapas para controlar demanda, vendas e avaliações
+ * de todos os itens do cardápio.
+ * 
+ * paramentro:  restaurante Instância do restaurante a ser gerenciado pelo sistema
+ */
     Sistema(Restaurante restaurante) {
         this.restaurante = restaurante;
 
@@ -38,6 +46,13 @@ public class Sistema {
         }
     }
 
+/**
+ * Analisa o estado atual do restaurante e retorna uma lista de ações recomendadas
+ * baseadas em dados de desempenho, situação financeira e análise de funcionários.
+ * Implementa um sistema de IA simulado para sugestões estratégicas.
+ * 
+ * return: ArrayList<Acao> Lista de ações recomendadas para otimizar o restaurante
+ */
     public ArrayList<Acao> obterAcoesRecomendadas() {
         ArrayList<Acao> acoes_recomendadas = new ArrayList<Acao>();
 
@@ -72,6 +87,13 @@ public class Sistema {
         return acoes_recomendadas;
     }
 
+/**
+ * Analisa a demanda e performance de cada item do cardápio, identificando
+ * padrões de alta/baixa demanda e bom/mau desempenho para recomendar
+ * ajustes de preços estratégicos.
+ * 
+ * paramentro: acoes_recomendadas Lista onde as ações de ajuste de preços serão adicionadas
+ */
     private void analisarDemandaItens(ArrayList<Acao> acoes_recomendadas) {
         for (ItemCardapio item : restaurante.obteCardapio().obterItemsNoCardapio()) {
             String nomeItem = item.obterNome();
@@ -115,6 +137,13 @@ public class Sistema {
         }
     }
 
+/**
+ * Calcula a avaliação média de um item específico do cardápio baseado
+ * no histórico de avaliações dos clientes.
+ * 
+ * paramentro: nomeItem Nome do item para calcular a avaliação média
+ * return: float Avaliação média entre 0.0 e 1.0, retorna 0.5 se não houver avaliações
+ */
     private float calcularAvaliacaoMedia(String nomeItem) {
         int numeroAvaliacoes = numeroAvaliacoesItens.getOrDefault(nomeItem, 0);
         if (numeroAvaliacoes == 0) {
@@ -124,6 +153,12 @@ public class Sistema {
         return totalAvaliacoes / numeroAvaliacoes;
     }
 
+/**
+ * Identifica funcionários com desempenho superior à média para possíveis
+ * promoções ou reconhecimento. Parte do sistema de análise de recursos humanos.
+ * 
+ * return: ArrayList<Funcionario> Lista de funcionários com alto desempenho
+ */
     public ArrayList<Funcionario> obterFuncionariosComAltoDesempenho() {
         ArrayList<Funcionario> funcionarios_com_alto_desempenho = new ArrayList<Funcionario>();
         for (Funcionario funcionario : this.restaurante.obterFuncionarios()) {
@@ -134,6 +169,12 @@ public class Sistema {
         return funcionarios_com_alto_desempenho;
     }
 
+/**
+ * Identifica funcionários com desempenho abaixo da média que podem necessitar
+ * de treinamento, rebaixamento ou demissão. Parte da análise de RH.
+ * 
+ * return: ArrayList<Funcionario> Lista de funcionários com baixo desempenho
+ */
     public ArrayList<Funcionario> obterFuncionariosComBaixoDesempenho() {
         ArrayList<Funcionario> funcionarios_com_baixo_desempenho = new ArrayList<Funcionario>();
 
@@ -146,6 +187,12 @@ public class Sistema {
         return funcionarios_com_baixo_desempenho;
     }
 
+/**
+ * Analisa o estoque e identifica quais ingredientes estão em falta para
+ * produzir todos os itens do cardápio, auxiliando no controle de estoque.
+ * 
+ * return: ArrayList<Ingrediente> Lista de ingredientes que precisam ser repostos
+ */
     public ArrayList<Ingrediente> obterIngredientesQueFaltam() {
         ArrayList<Ingrediente> ingredientes_que_faltam = new ArrayList<Ingrediente>();
 
@@ -177,6 +224,12 @@ public class Sistema {
         return ingredientes_que_faltam;
     }
 
+/**
+ * Determina todos os ingredientes necessários para produzir os itens
+ * que estão esgotados no cardápio, baseado na composição dos alimentos.
+ * 
+ * return: ArrayList<Ingrediente> Lista de ingredientes necessários para itens esgotados
+ */
     public ArrayList<Ingrediente> obterIngredientesNecessarios() {
         ArrayList<Ingrediente> ingredientes_necessarios = new ArrayList<Ingrediente>();
         for (ItemCardapio item : this.restaurante.obteCardapio().obterItemsEsgotados(this.restaurante.obterEstoque())) {
@@ -188,6 +241,12 @@ public class Sistema {
         return ingredientes_necessarios;
     }
 
+/**
+ * Identifica itens do cardápio com desempenho ruim baseado em avaliações
+ * e vendas, auxiliando na tomada de decisões sobre o cardápio.
+ * 
+ * return: ArrayList<ItemCardapio> Lista de itens com pior desempenho
+ */
     public ArrayList<ItemCardapio> obterAlimentosComPiorDesempenho() {
         ArrayList<ItemCardapio> itens_com_pior_desempenho = new ArrayList<ItemCardapio>();
 
@@ -200,6 +259,11 @@ public class Sistema {
         return itens_com_pior_desempenho;
     }
 
+/**
+ * Executa a simulação completa de um dia de operação do restaurante,
+ * incluindo geração de clientes, processamento de pedidos, avaliações
+ * de funcionários e análise financeira. Método principal da simulação.
+ */
     public void simularDia() {
         diasDecorridos++;
         System.out.println("=== INICIANDO SIMULAÇÃO DO DIA " + diasDecorridos + " ===");
@@ -551,7 +615,11 @@ public class Sistema {
 
         System.out.println("\n=== FIM DA SIMULAÇÃO ===\n");
     }
-
+/**
+ * Processa o pagamento semanal de salários dos funcionários, calculando
+ * o total baseado nos cargos e verificando se há recursos suficientes
+ * no cofre do restaurante.
+ */
     private void pagarSalarios() {
         System.out.println("\n=== 💸 PAGAMENTO DE SALÁRIOS (DIA " + diasDecorridos + ") ===");
         float totalSalarios = 0.0f;
@@ -587,6 +655,13 @@ public class Sistema {
         System.out.println("=== FIM DO PAGAMENTO DE SALÁRIOS ===\n");
     }
 
+/**
+ * Calcula o salário semanal baseado no cargo do funcionário, implementando
+ * a hierarquia salarial da empresa (Gerente > Cozinheiro > Caixa > Estoquista > Faxineiro).
+ * 
+ * paramentro: cargo Cargo do funcionário
+ * return: float Valor do salário semanal em reais
+ */
     private float calcularSalario(Cargo cargo) {
         switch (cargo) {
             case Gerente:
@@ -604,6 +679,13 @@ public class Sistema {
         }
     }
 
+/**
+ * Busca o funcionário mais qualificado para promoção emergencial a gerente
+ * quando não há gerente no restaurante, seguindo ordem de prioridade por cargo
+ * e avaliação de desempenho.
+ * 
+ * return: Funcionario Melhor candidato para promoção ou null se não houver
+ */
     private Funcionario encontrarMelhorCandidatoParaGerente() {
         Funcionario melhorCandidato = null;
         float melhorAvaliacao = -1.0f;
@@ -634,6 +716,12 @@ public class Sistema {
         return melhorCandidato;
     }
 
+/**
+ * Localiza e retorna o primeiro funcionário com cargo de Estoquista
+ * encontrado na lista de funcionários do restaurante.
+ * 
+ * return: Funcionario Estoquista encontrado ou null se não houver
+ */
     private Funcionario obterEstoquista() {
         for (Funcionario funcionario : restaurante.obterFuncionarios()) {
             if (funcionario.obterCargo() == Cargo.Estoquista) {
@@ -642,7 +730,12 @@ public class Sistema {
         }
         return null;
     }
-
+/**
+ * Localiza e retorna o funcionário com cargo de Gerente do restaurante.
+ * Usado para verificar se há gerência ativa no estabelecimento.
+ * 
+ * return: Funcionario Gerente encontrado ou null se não houver
+ */
     private Funcionario obterGerente() {
         for (Funcionario funcionario : restaurante.obterFuncionarios()) {
             if (funcionario.obterCargo() == Cargo.Gerente) {
@@ -652,6 +745,13 @@ public class Sistema {
         return null;
     }
 
+/**
+ * Gera uma quantidade aleatória de clientes (entre 40-80) com perfis
+ * diversificados incluindo diferentes classes sociais, idades e capacidade
+ * financeira para simular o movimento diário do restaurante.
+ * 
+ * return: ArrayList<Cliente> Lista de clientes gerados aleatoriamente
+ */
     private ArrayList<Cliente> gerarClientesRandomicos() {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         Random random = new Random();
@@ -685,6 +785,13 @@ public class Sistema {
         return clientes;
     }
 
+/**
+ * Localiza e retorna o primeiro funcionário com cargo de Caixa disponível
+ * para atender clientes durante a simulação do dia.
+ * 
+ * return: Funcionario Caixa disponível ou null se não houver
+ */
+
     private Funcionario obterCaixaDisponivel() {
         for (Funcionario funcionario : restaurante.obterFuncionarios()) {
             if (funcionario.obterCargo() == Cargo.Caixa) {
@@ -693,7 +800,12 @@ public class Sistema {
         }
         return null;
     }
-
+/**
+ * Localiza e retorna o primeiro funcionário com cargo de Cozinheiro disponível
+ * para preparar os pedidos durante a simulação.
+ * 
+ * return: Funcionario Cozinheiro disponível ou null se não houver
+ */
     private Funcionario obterCozinheiroDisponivel() {
         for (Funcionario funcionario : restaurante.obterFuncionarios()) {
             if (funcionario.obterCargo() == Cargo.Cozinheiro) {
@@ -703,6 +815,12 @@ public class Sistema {
         return null;
     }
 
+/**
+ * Seleciona aleatoriamente um item do cardápio disponível, simulando
+ * a escolha espontânea de um cliente sem influência do atendente.
+ * 
+ * return: ItemCardapio Item escolhido aleatoriamente ou null se cardápio vazio
+ */
     private ItemCardapio escolherItemAleatorio() {
         ArrayList<ItemCardapio> items = restaurante.obteCardapio().obterItemsNoCardapio();
         if (items.isEmpty())
@@ -712,6 +830,13 @@ public class Sistema {
         return items.get(random.nextInt(items.size()));
     }
 
+/**
+ * Determina o próximo cargo na hierarquia de promoção baseado no cargo atual,
+ * seguindo a ordem: Faxineiro → Estoquista → Caixa → Cozinheiro → Gerente.
+ * 
+ * paramentro: cargoAtual Cargo atual do funcionário
+ * return: Cargo Próximo cargo na hierarquia ou null se já for o mais alto
+ */
     private Cargo obterCargoSuperior(Cargo cargoAtual) {
         switch (cargoAtual) {
             case Faxineiro:
@@ -729,6 +854,13 @@ public class Sistema {
         }
     }
 
+/**
+ * Determina o cargo inferior na hierarquia para rebaixamentos, seguindo
+ * a ordem inversa: Gerente → Cozinheiro → Caixa → Estoquista → Faxineiro.
+ * 
+ * paramentros: cargoAtual Cargo atual do funcionário
+ * return: Cargo Cargo inferior na hierarquia ou null se já for o mais baixo
+ */
     private Cargo obterCargoInferior(Cargo cargoAtual) {
         switch (cargoAtual) {
             case Gerente:

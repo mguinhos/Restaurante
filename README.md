@@ -74,8 +74,8 @@ pacman -S make
 1.  **Clone o repositório**
 
 ```bash
-git clone [url-do-repositorio]
-cd restaurante-projeto
+git clone https://github.com/mguinhos/Restaurante
+cd Restaurante
 ```
 
 2.  **Compile o projeto**

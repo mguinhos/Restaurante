@@ -6,6 +6,16 @@ Este projeto é uma simulação de um sistema de gestão para um restaurante, de
 
 [Licença MIT](./LICENSE.md)
 
+## Perguntas Respondiades com Métodos
+1. Quais os funcionários com melhor desempenho?
+2. Quais são os alimentos com maior demanda?
+3. Quais são os ingredientes que faltam para colocar no estoque?
+4. Que funcionários devemos provomer?
+5. Qual o preço máximo que develos cobrar pelos alimentos?
+6. Quais as ações administrativas que o gerende deve tomar?
+
+As perguntas equivalem a métodos implementados na classe Sistema (Checar UML).
+
 ## Como Executar
 
 ### Pré-requisitos
